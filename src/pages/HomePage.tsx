@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 function HomePage() {
-  const location = useLocation();
+  const location = useLocation(); // 取得當前路徑
   const nodeRef = useRef(null);
   return (
     <div className="h-screen">
@@ -35,7 +35,7 @@ const PageContainer = styled.div`
 `;
 
 const StyledContent = styled.div`
-  height: calc(100vh - 10px);
+  height: calc(100vh - 10px); //FIXME: <html>,<body>高度会怪怪的
   &.fade-enter {
     opacity: 0;
   }

@@ -2,7 +2,6 @@ import { resolve } from 'path';
 import { defineConfig, loadEnv, ConfigEnv } from 'vite';
 
 import viteCompression from 'vite-plugin-compression';
-import { buildConfig } from './src/utils/build';
 import react from '@vitejs/plugin-react';
 const pathResolve = (dir: string) => {
   return resolve(__dirname, '.', dir);
@@ -14,7 +13,7 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
   const env = loadEnv(mode.mode, process.cwd());
 
   return {
-    plugins: [react(), viteCompression(), JSON.parse(env.VITE_OPEN_CDN) ? buildConfig.cdn() : null],
+    plugins: [react(), viteCompression()],
     root: process.cwd(),
     resolve: { alias },
     base: mode.command === 'serve' ? './' : env.VITE_PUBLIC_PATH,
@@ -30,7 +29,6 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
           cors: false,
           changeOrigin: true,
           rewrite: (path) => {
-            console.log('Rewriting path:', path); // Add logging here
             return path.replace(/^\/api/, '');
           },
           configure: (proxy, options) => {
@@ -58,11 +56,9 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
             }
           },
         },
-        ...(JSON.parse(env.VITE_OPEN_CDN) ? { external: buildConfig.external } : {}),
       },
     },
     css: { preprocessorOptions: { css: { charset: false } } },
-    define: {},
   };
 });
 
